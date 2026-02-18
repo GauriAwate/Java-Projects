@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Orders</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f4f6f8;
+          padding: 40px;
+        }
+        h1 {
+          color: #4B3832;
+          margin-bottom: 20px;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          background: #fff;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+          padding: 12px 15px;
+          border: 1px solid #ddd;
+          text-align: left;
+        }
+        th {
+          background-color: #8B5E3C;
+          color: white;
+        }
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+        tr:hover {
+          background-color: #f1f1f1;
+        }
+        ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+        li {
+          list-style-type: disc;
+        }
+        .btn {
+          display: inline-block;
+          padding: 10px 15px;
+          background-color: #8B5E3C;
+          color: white;
+          text-decoration: none;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          margin-top: 20px;
+        }
+        .btn:hover {
+          background-color: #6E4528;
+        }
+    </style>
+</head>
+<body>
+<h1>📦 Orders List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Books</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.username}"></td>
+        <td>
+            <ul>
+                <li th:each="book : ${order.books}" th:text="${book.title}"></li>
+            </ul>
+        </td>
+        <td th:text="${order.status}"></td>
+        <td th:text="${#temporals.format(order.createdDate, 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${#temporals.format(order.lastModifiedDate, 'dd-MM-yyyy HH:mm')}"></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/}" class="btn">🏠 Back to Home</a>
+</body>
+</html>

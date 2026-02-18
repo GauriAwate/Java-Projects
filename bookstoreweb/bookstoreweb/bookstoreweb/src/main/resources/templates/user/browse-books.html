@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Browse Books</title>
+    <style>
+        body {
+            background: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('/images/bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background: #5D4037;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        footer {
+            background: #5D4037;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        form.search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"],
+        button {
+            padding: 8px 15px;
+            background: #8B4513;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background: #A0522D;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .book-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #aaa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+            color: #555;
+        }
+
+        .buttons {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .cart-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #8B4513;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .cart-link:hover {
+            background: #A0522D;
+        }
+
+        .back-link {
+            display: inline-block;
+            text-decoration: none;
+            background: #8B4513;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background: #A0522D;
+        }
+
+        .back-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .success-message {
+            margin-top: 10px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function handleAddToCart(event, button) {
+            event.preventDefault();
+            const form = button.closest('form');
+            const actionUrl = form.action;
+
+            fetch(actionUrl, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    showMessage(button, '✅ Added to cart successfully!');
+                } else {
+                    showMessage(button, '❌ Failed to add to cart.');
+                }
+            }).catch(() => {
+                showMessage(button, '⚠️ Error adding to cart.');
+            });
+        }
+
+        function handleBuyNow(event, button) {
+            event.preventDefault();
+            const form = button.closest('form');
+            const actionUrl = form.action;
+
+            fetch(actionUrl, {
+                method: 'POST'
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/confirm-order';
+                } else {
+                    showMessage(button, '❌ Failed to process buy now.');
+                }
+            }).catch(() => {
+                showMessage(button, '⚠️ Error processing buy now.');
+            });
+        }
+
+        function showMessage(button, message) {
+            const card = button.closest('.book-card');
+            const msgBox = card.querySelector('.success-message');
+            msgBox.textContent = message;
+
+            // Auto-clear message after 3 seconds
+            setTimeout(() => {
+                msgBox.textContent = '';
+            }, 3000);
+        }
+    </script>
+</head>
+<body>
+<header>
+    <a class="cart-link" th:href="@{/cart}">🛒 View My Cart</a>
+    <h1>📚 Browse Books</h1>
+</header>
+
+<main>
+    <form method="get" th:action="@{/books}" class="search-form">
+        <!-- Keyword Search -->
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Search books by keyword..."/>
+        <button type="submit" name="searchType" value="keyword">Search by Keyword</button>
+
+        <!-- Author Search -->
+        <input type="text" name="author" th:value="${author}" placeholder="Author name..."/>
+        <button type="submit" name="searchType" value="author">Search by Author</button>
+
+        <!-- Price Range Filter -->
+        <input type="number" name="minPrice" step="0.01" th:value="${minPrice}" placeholder="Min Price"/>
+        <input type="number" name="maxPrice" step="0.01" th:value="${maxPrice}" placeholder="Max Price"/>
+        <button type="submit" name="searchType" value="price">Filter by Price</button>
+    </form>
+
+
+
+    <div class="book-grid">
+        <div class="book-card" th:each="book : ${books}">
+            <strong th:text="${book.title}"></strong>
+            <br>💲<span th:text="${book.price}"></span>
+            <br>
+            <small>
+                Author:
+                <span th:if="${book.author != null}" th:text="${book.author.name}"></span>
+                <span th:unless="${book.author != null}">N/A</span>
+            </small>
+
+            <div class="buttons">
+                <!-- Buy Now -->
+                <form th:action="@{'/books/buy/' + ${book.id}}" method="post">
+                    <button type="submit" onclick="handleBuyNow(event, this)">Buy Now</button>
+                </form>
+
+                <!-- Add to Cart -->
+                <form th:action="@{'/cart/add/' + ${book.id}}" method="post">
+                    <button type="submit" onclick="handleAddToCart(event, this)">Add to Cart</button>
+                </form>
+
+                <!-- View Details (unchanged) -->
+                <a th:href="@{'/books/details/' + ${book.id}}">
+                    <button type="button">View Details</button>
+                </a>
+            </div>
+
+            <div class="success-message"></div>
+        </div>
+    </div>
+
+    <div class="back-container">
+        <a class="back-link" th:href="@{/}">⬅️ Back to Home</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Bookstore. All rights reserved.</p>
+</footer>
+</body>
+</html>

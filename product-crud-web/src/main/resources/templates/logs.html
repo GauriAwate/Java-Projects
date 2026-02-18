@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Logs</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Application Logs</h1>
+    <nav>
+        <a th:href="@{/products}">Back to List</a>
+        <a th:href="@{/}">Home</a>
+    </nav>
+    <div th:if="${error != null}">
+        <p class="error" th:text="${error}"></p>
+    </div>
+    <div th:if="${logs != null}">
+        <pre th:text="${logs}"></pre>
+    </div>
+</div>
+</body>
+</html>

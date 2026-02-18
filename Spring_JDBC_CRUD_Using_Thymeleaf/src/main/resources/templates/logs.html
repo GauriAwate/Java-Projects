@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Logs</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Application Logs</h1>
+    <nav>
+        <a th:href="@{/students}">Back to List</a>
+        <a th:href="@{/}">Home</a>
+    </nav>
+    <div th:if="${logs.startsWith('Unable to')}">
+        <p class="error" th:text="${logs}"></p>
+    </div>
+    <div th:unless="${logs.startsWith('Unable to')}">
+        <pre th:text="${logs}"></pre>
+    </div>
+</div>
+</body>
+</html>

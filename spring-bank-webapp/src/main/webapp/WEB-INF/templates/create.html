@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f0f0f0;
+        }
+        h2 { color: #333; }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        input[type="submit"] {
+            padding: 8px 16px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<h2>Create Account</h2>
+<form th:action="@{/create}" method="post">
+    Name: <input type="text" name="name" required/><br/>
+    Initial Balance: <input type="number" name="balance" step="0.01" required/><br/>
+    <input type="submit" value="Create"/>
+</form>
+<a th:href="@{/deposit}">Deposit</a> |
+<a th:href="@{/withdraw}">Withdraw</a> |
+<a th:href="@{/transfer}">Transfer</a> |
+<a th:href="@{/balance}">Check Balance</a>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book Details</title>
+    <style>
+        body {
+            background: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('/images/bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header, footer {
+            background: #5D4037;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .details, .reviews, .review-form {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #aaa;
+            max-width: 500px;
+        }
+
+        .details img {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .reviews h3, .review-form h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        ul.review-list {
+            padding-left: 20px;
+        }
+
+        ul.review-list li {
+            margin-bottom: 12px;
+            list-style-type: disc;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        textarea {
+            padding: 10px;
+            font-family: Arial;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: #8B4513;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #A0522D;
+        }
+
+        a.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #8B4513;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+        }
+
+        a.back-button:hover {
+            background: #A0522D;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 Book Details</h1>
+</header>
+
+<main>
+    <!-- Book Info -->
+    <div class="details">
+        <img th:if="${book.coverImage != null}" th:src="@{'/images/' + ${book.coverImage}}" alt="Book Cover"/>
+        <img th:unless="${book.coverImage != null}" th:src="@{'/images/img.png'}" alt="Default Cover"/>
+        <h2 th:text="${book.title}"></h2>
+        <p><strong>Author:</strong> <span th:text="${book.author.name}"></span></p>
+        <p><strong>Price:</strong> $<span th:text="${book.price}"></span></p>
+        <p th:if="${book.publisher != null}">
+            <strong>Publisher:</strong> <span th:text="${book.publisher.name}"></span>
+        </p>
+        <a th:href="@{/books}" class="back-button">⬅️ Back to Browse</a>
+    </div>
+
+    <!-- Existing Reviews -->
+    <div class="reviews">
+        <h3>📢 Buyer Reviews</h3>
+        <ul class="review-list" th:if="${book.reviews != null and #lists.size(book.reviews) > 0}">
+            <li th:each="review : ${book.reviews}">
+                <strong th:text="${review.user.username} + ':'"></strong>
+                <span th:text="${review.comment}"></span>
+            </li>
+        </ul>
+        <p th:if="${book.reviews == null or #lists.isEmpty(book.reviews)}">No reviews yet. Be the first to review!</p>
+    </div>
+
+    <!-- Add Review Form -->
+    <div class="review-form">
+        <h3>📝 Add Your Review</h3>
+        <form th:action="@{'/books/' + ${book.id} + '/reviews'}" method="post">
+            <textarea name="comment" placeholder="Write your review here..." rows="4" required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

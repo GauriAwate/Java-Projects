@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Borrow Requests</title>
+    <style>
+        body {
+            background: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('/images/bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background: #5D4037; /* brown header */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background: #5D4037; /* brown footer */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0 0 30px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 1000px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        th {
+            background: #8B4513; /* consistent brown */
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        tr:hover {
+            background: #e0e0e0;
+        }
+
+        button {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #8B4513; /* brown button */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 2px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #A0522D;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background: #8B4513; /* brown link */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        a.back-link:hover {
+            background: #A0522D;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>📚 Borrow Requests</h2>
+</header>
+
+<main>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Book</th>
+            <th>User</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="request : ${requests}">
+            <td th:text="${request.id}"></td>
+            <td th:text="${request.book.title}"></td>
+            <td th:text="${request.user}"></td>
+            <td th:text="${request.status}"></td>
+            <td>
+                <span th:if="${request.status == 'PENDING'}">
+                    <form th:action="@{'/admin/requests/approve/' + ${request.id}}" method="post" style="display:inline;">
+                        <button type="submit">Approve</button>
+                    </form>
+                    <form th:action="@{'/admin/requests/reject/' + ${request.id}}" method="post" style="display:inline;">
+                        <button type="submit">Reject</button>
+                    </form>
+                </span>
+                <span th:if="${request.status == 'APPROVED'}">Borrowed ✅</span>
+                <span th:if="${request.status == 'RETURNED'}">Returned ✅</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin/dashboard}" class="back-link">⬅️ Back to Admin Dashboard</a>
+</main>
+
+<footer>
+    <p>&copy; 2025 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

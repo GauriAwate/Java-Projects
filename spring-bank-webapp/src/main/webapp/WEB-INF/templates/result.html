@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Result</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f0f0f0; }
+    h2 { color: #28a745; }
+    a { display: inline-block; margin-top: 15px; color: #007bff; }
+  </style>
+</head>
+<body>
+<h2 th:text="${msg}"></h2>
+<a th:href="@{/}">Home</a>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book Details</title>
+    <style>
+        body {
+            background: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('/images/bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background: #5D4037; /* brown header */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background: #5D4037; /* brown footer */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        main {
+            flex: 1; /* fill remaining space */
+            padding: 40px;
+            text-align: center;
+        }
+
+        .details {
+            background: #fff;
+            display: inline-block;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #aaa;
+            text-align: left;
+            max-width: 400px;
+        }
+
+        img {
+            max-width: 100%;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        a.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #8B4513; /* consistent brown */
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        a.back-button:hover {
+            background: #A0522D; /* hover brown */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 Book Details</h1>
+</header>
+
+<main>
+    <div class="details">
+        <img th:if="${book.coverImage != null}"
+             th:src="@{'/images/' + ${book.coverImage}}"
+             alt="Book Cover"/>
+
+        <img th:unless="${book.coverImage != null}"
+             th:src="@{'/images/img.png'}"
+             alt="Book Cover"/>
+
+        <h2 th:text="${book.title}"></h2>
+
+        <p><strong>Author:</strong> <span th:text="${book.author.name}"></span></p>
+        <p><strong>Price:</strong> $<span th:text="${book.price}"></span></p>
+        <p th:if="${book.publisher != null}">
+            <strong>Publisher:</strong> <span th:text="${book.publisher.name}"></span>
+        </p>
+
+        <a th:href="@{/books}" class="back-button">⬅️ Back to Browse</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bookstore Home</title>
+    <style>
+        /* Full-page background with HD gradient */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: url('/images/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+        }
+
+        /* Header bar */
+        header {
+            background: rgba(0, 0, 0, 0.7); /* transparent black */
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: #fff;
+            background: #8B4513; /* brown */
+            padding: 8px 15px;
+            margin-left: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #A0522D; /* lighter brown on hover */
+        }
+
+        /* Main content box */
+        .content {
+            background: rgba(255, 255, 255, 0.85); /* semi-transparent white */
+            padding: 50px;
+            margin: 200px auto;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 600px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .content h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        footer {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">📚 Bookstore</div>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/books}">Browse Books</a>
+        <a th:href="@{/cart}">My Cart</a>
+        <span th:if="${session.user == null}">
+            <a th:href="@{/login}">User Login</a>
+        </span>
+        <span th:if="${session.admin == null}">
+            <a th:href="@{/admin/login}">Admin Login</a>
+        </span>
+        <span th:if="${session.user != null or session.admin != null}">
+            <a th:href="@{/logout}">Logout</a>
+        </span>
+    </nav>
+</header>
+
+
+<div class="content">
+    <h1>Welcome to the Bookstore 📚</h1>
+    <p>Browse books, borrow your favorites, and enjoy reading!</p>
+</div>
+
+<footer>
+    &copy; 2025 Bookstore. All rights reserved.
+</footer>
+
+</body>
+</html>

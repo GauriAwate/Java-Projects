@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Withdraw</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f0f0f0; }
+    h2 { color: #333; }
+    form { background: #fff; padding: 20px; border-radius: 8px; width: 300px; }
+    input { width: 100%; margin-bottom: 10px; padding: 8px; }
+    input[type="submit"] { background: #dc3545; color: #fff; border: none; cursor: pointer; }
+    a { display: inline-block; margin-top: 15px; color: #007bff; }
+  </style>
+</head>
+<body>
+<h2>Withdraw</h2>
+<form th:action="@{/withdraw}" method="post">
+  Account ID: <input type="number" name="id" required/><br/>
+  Amount: <input type="number" name="amount" step="0.01" required/><br/>
+  <input type="submit" value="Withdraw"/>
+</form>
+<a th:href="@{/}">Home</a>
+</body>
+</html>
